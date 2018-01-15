@@ -1,0 +1,19 @@
+---
+services: docker
+
+env:
+  - distro: ubuntu1604
+
+script:
+  # Configure test script so we can run extra tests after playbook is run.
+  - export container_id=$(date +%s)
+  - export cleanup=false
+
+  # Run tests.
+  - ${PWD}/tests/test.sh
+
+  # Test if Elasticsearch is working.
+  - 'docker exec --tty ${container_id} env TERM=xterm curl -XGET localhost:9200'
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
