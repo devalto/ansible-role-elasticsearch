@@ -26,6 +26,10 @@
       line: "network.host: {{ elasticsearch_network_host }}"
     - regexp: "http.port:"
       line: "http.port: {{ elasticsearch_http_port }}"
+    - regexp: "cluster.name:"
+      line: "cluster.name: {{ elasticsearch_cluster_name }}"
+    - regexp: "node.name:"
+      line: "node.name: {{ elasticsearch_node_name }}"
 
 - name: Start Elasticsearch.
   service: name=elasticsearch state=started enabled=yes

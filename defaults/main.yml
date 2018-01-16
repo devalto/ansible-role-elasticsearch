@@ -1,3 +1,5 @@
 ---
 elasticsearch_network_host: localhost
 elasticsearch_http_port: 9200
+elasticsearch_cluster_name: elasticsearch
+elasticsearch_node_name: node-1
