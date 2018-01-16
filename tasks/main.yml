@@ -30,6 +30,7 @@
       line: "cluster.name: {{ elasticsearch_cluster_name }}"
     - regexp: "node.name:"
       line: "node.name: {{ elasticsearch_node_name }}"
+  notify: restart elasticsearch
 
 - name: Start Elasticsearch.
   service: name=elasticsearch state=started enabled=yes
