@@ -14,6 +14,7 @@
   apt:
     pkg: elasticsearch
     state: present
+  register: elasticsearch_install
 
 - name: Configure Elasticsearch.
   lineinfile:
@@ -31,9 +32,15 @@
     - regexp: "node.name:"
       line: "node.name: {{ elasticsearch_node_name }}"
   notify: restart elasticsearch
+  register: elasticsearch_config
 
 - name: Start Elasticsearch.
   service: name=elasticsearch state=started enabled=yes
+  when: elasticsearch_install.changed
+
+- name: Restart Elasticsearch.
+  service: name=elasticsearch state=restarted
+  when: not elasticsearch_install.changed and elasticsearch_config.changed
 
 - name: Make sure Elasticsearch is running before proceeding.
-  wait_for: host={{ elasticsearch_network_host }} port={{ elasticsearch_http_port }} delay=3 timeout=300
+  wait_for: host=localhost port=9200 delay=3 timeout=300
