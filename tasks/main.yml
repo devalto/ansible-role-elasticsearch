@@ -43,4 +43,8 @@
   when: not elasticsearch_install.changed and elasticsearch_config.changed
 
 - name: Make sure Elasticsearch is running before proceeding.
-  wait_for: host=localhost port=9200 delay=3 timeout=300
+  wait_for:
+    host: "{{ elasticsearch_network_host }}"
+    port: "{{ elasticsearch_http_port }}"
+    delay: 3
+    timeout: 300
