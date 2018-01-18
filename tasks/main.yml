@@ -16,6 +16,16 @@
     state: present
   register: elasticsearch_install
 
+- name: Set zen discovery hosts line to empty.
+  set_fact:
+    _elasticsearch_cluster_hosts_line: "#discovery.zen.ping.unicast.hosts:"
+  when: elasticsearch_peers is not defined
+
+- name: Set zen discovery hosts line to hosts.
+  set_fact:
+    _elasticsearch_cluster_hosts_line: "discovery.zen.ping.unicast.hosts: [ \"{{ elasticsearch_peers | join('\", \"') }}\"]"
+  when: elasticsearch_peers is defined
+
 - name: Configure Elasticsearch.
   lineinfile:
     dest: /etc/elasticsearch/elasticsearch.yml
@@ -31,6 +41,8 @@
       line: "cluster.name: {{ elasticsearch_cluster_name }}"
     - regexp: "node.name:"
       line: "node.name: {{ elasticsearch_node_name }}"
+    - regexp: "discovery.zen.ping.unicast.hosts:"
+      line: "{{ _elasticsearch_cluster_hosts_line }}"
   notify: restart elasticsearch
   register: elasticsearch_config
 
