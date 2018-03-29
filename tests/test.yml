@@ -16,7 +16,7 @@
         - apt-transport-https
 
   roles:
-    - geerlingguy.java
+    - devalto.java
     - role: role_under_test
       elasticsearch_cluster_name: test_cluster
       elasticsearch_node_name: test_node_1
