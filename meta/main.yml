@@ -1,6 +1,6 @@
 ---
 dependencies:
-  - geerlingguy.java,1.7.6
+  - devalto.java,1.0.0
 
 galaxy_info:
   author: Sylvain Filteau
